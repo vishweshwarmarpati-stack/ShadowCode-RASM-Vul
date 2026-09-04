@@ -67,3 +67,33 @@ def test_detect_sql_injection_f_string():
     assert findings[0].title == "Possible SQL Injection"
     assert findings[0].severity == "HIGH"
     assert findings[0].line == 2
+def test_detect_hardcoded_secret():
+    code = (
+        'API_KEY = "sk-example123"\n'
+        'PASSWORD = "mypassword"\n'
+        'name = "Mayank"'
+    )
+
+    findings = analyze_python_code(code)
+
+    assert len(findings) == 2
+
+    assert findings[0].title == "Possible Hardcoded Secret"
+    assert findings[0].severity == "HIGH"
+    assert findings[0].line == 1
+
+    assert findings[1].title == "Possible Hardcoded Secret"
+    assert findings[1].severity == "HIGH"
+    assert findings[1].line == 2
+
+
+def test_environment_variable_secret_is_safe():
+    code = (
+        'import os\n'
+        'API_KEY = os.getenv("API_KEY")\n'
+        'PASSWORD = os.getenv("PASSWORD")'
+    )
+
+    findings = analyze_python_code(code)
+
+    assert findings == []

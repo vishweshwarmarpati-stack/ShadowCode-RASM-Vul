@@ -34,6 +34,18 @@ SQL_KEYWORDS = (
     "DROP",
 )
 
+SECRET_KEYWORDS = (
+    "API_KEY",
+    "APIKEY",
+    "SECRET_KEY",
+    "SECRET",
+    "PASSWORD",
+    "PASSWD",
+    "TOKEN",
+    "ACCESS_TOKEN",
+    "AUTH_TOKEN",
+)
+
 
 def analyze_python_code(code: str) -> list[SecurityFinding]:
     tree = parse_python_code(code)
@@ -49,6 +61,7 @@ def _walk_tree(
     node: Node,
     findings: list[SecurityFinding],
 ) -> None:
+    # Detect function calls.
     if node.type == "call":
         function_node = node.child_by_field_name("function")
 
@@ -171,6 +184,35 @@ def _walk_tree(
                                                 line=node.start_point[0] + 1,
                                             )
                                         )
+
+    # Detect possible hardcoded secrets in assignments.
+    if node.type == "assignment":
+        left_node = node.child_by_field_name("left")
+        right_node = node.child_by_field_name("right")
+
+        if left_node and right_node:
+            variable_name = left_node.text.decode("utf-8").upper()
+
+            if any(keyword in variable_name for keyword in SECRET_KEYWORDS):
+                if right_node.type == "string":
+                    findings.append(
+                        SecurityFinding(
+                            title="Possible Hardcoded Secret",
+                            severity="HIGH",
+                            description=(
+                                "A variable with a secret-like name is assigned "
+                                "a hardcoded string value. Hardcoded credentials, "
+                                "API keys, passwords, or tokens can be exposed "
+                                "through source code repositories."
+                            ),
+                            recommendation=(
+                                "Move secrets to environment variables or a "
+                                "dedicated secrets manager and never commit "
+                                "real credentials to source control."
+                            ),
+                            line=node.start_point[0] + 1,
+                        )
+                    )
 
     for child in node.children:
         _walk_tree(child, findings)
