@@ -6,6 +6,7 @@ from app.agents.security_agent import SecurityAgent
 from app.llm.client import generate_security_analysis
 from app.prompts.security_prompt import build_security_prompt
 from app.schemas.models import AIAnalysisResponse, CodeInput
+from app.security.decision_engine import SecurityDecisionEngine
 from app.security.risk_validator import RiskValidator
 
 
@@ -13,6 +14,7 @@ class AIEngine:
     def __init__(self):
         self.security_agent = SecurityAgent()
         self.risk_validator = RiskValidator()
+        self.decision_engine = SecurityDecisionEngine()
 
     def analyze(self, code_input: CodeInput) -> dict:
         # Step 1: Run deterministic security checks
@@ -54,9 +56,15 @@ class AIEngine:
             ai_analysis,
         )
 
-        # Step 8: Return all analysis results
+        # Step 8: Convert the risk score into a security decision
+        security_decision = self.decision_engine.decide(
+            final_risk_score
+        )
+
+        # Step 9: Return all analysis results
         return {
             "static_analysis": static_result.model_dump(),
             "ai_analysis": ai_analysis.model_dump(),
             "final_risk_score": final_risk_score,
+            "security_decision": security_decision,
         }
