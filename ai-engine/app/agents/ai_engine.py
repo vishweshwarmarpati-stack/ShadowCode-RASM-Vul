@@ -6,11 +6,13 @@ from app.agents.security_agent import SecurityAgent
 from app.llm.client import generate_security_analysis
 from app.prompts.security_prompt import build_security_prompt
 from app.schemas.models import AIAnalysisResponse, CodeInput
+from app.security.risk_validator import RiskValidator
 
 
 class AIEngine:
     def __init__(self):
         self.security_agent = SecurityAgent()
+        self.risk_validator = RiskValidator()
 
     def analyze(self, code_input: CodeInput) -> dict:
         # Step 1: Run deterministic security checks
@@ -46,8 +48,15 @@ class AIEngine:
                 "Featherless returned invalid security-analysis data."
             ) from exc
 
-        # Step 7: Return structured results
+        # Step 7: Calculate the final risk score
+        final_risk_score = self.risk_validator.validate(
+            static_result,
+            ai_analysis,
+        )
+
+        # Step 8: Return all analysis results
         return {
             "static_analysis": static_result.model_dump(),
             "ai_analysis": ai_analysis.model_dump(),
+            "final_risk_score": final_risk_score,
         }
