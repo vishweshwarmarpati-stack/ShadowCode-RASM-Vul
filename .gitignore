@@ -5,3 +5,7 @@ __pycache__/
 .vscode/
 Shadow Code OLD/
 Shadow Code BACKUP OLD/
+
+# Local sandbox/test files
+.DS_Store
+.sandbox_workspaces/
