@@ -26,6 +26,14 @@ DANGEROUS_MODULE_FUNCTIONS = {
     ),
 }
 
+SQL_KEYWORDS = (
+    "SELECT",
+    "INSERT",
+    "UPDATE",
+    "DELETE",
+    "DROP",
+)
+
 
 def analyze_python_code(code: str) -> list[SecurityFinding]:
     tree = parse_python_code(code)
@@ -88,6 +96,81 @@ def _walk_tree(
                                 line=node.start_point[0] + 1,
                             )
                         )
+
+                    # Detect possible SQL injection through cursor.execute().
+                    if function_name == "execute":
+                        arguments_node = node.child_by_field_name("arguments")
+
+                        if arguments_node:
+                            for argument in arguments_node.named_children:
+
+                                # Pattern 1:
+                                # cursor.execute("SELECT ..." + user_input)
+                                if argument.type == "binary_operator":
+                                    left_node = argument.child_by_field_name("left")
+
+                                    if left_node and left_node.type == "string":
+                                        sql_text = (
+                                            left_node.text.decode("utf-8").upper()
+                                        )
+
+                                        if any(
+                                            keyword in sql_text
+                                            for keyword in SQL_KEYWORDS
+                                        ):
+                                            findings.append(
+                                                SecurityFinding(
+                                                    title="Possible SQL Injection",
+                                                    severity="HIGH",
+                                                    description=(
+                                                        "SQL query construction combines "
+                                                        "a SQL statement with another "
+                                                        "expression, which may allow "
+                                                        "untrusted input to alter the query."
+                                                    ),
+                                                    recommendation=(
+                                                        "Use parameterized queries or "
+                                                        "prepared statements instead of "
+                                                        "building SQL with string concatenation."
+                                                    ),
+                                                    line=node.start_point[0] + 1,
+                                                )
+                                            )
+
+                                # Pattern 2:
+                                # cursor.execute(f"SELECT ... {user_input}")
+                                elif argument.type == "string":
+                                    argument_text = argument.text.decode("utf-8").upper()
+
+                                    has_sql_keyword = any(
+                                        keyword in argument_text
+                                        for keyword in SQL_KEYWORDS
+                                    )
+
+                                    has_interpolation = any(
+                                        child.type == "interpolation"
+                                        for child in argument.named_children
+                                    )
+
+                                    if has_sql_keyword and has_interpolation:
+                                        findings.append(
+                                            SecurityFinding(
+                                                title="Possible SQL Injection",
+                                                severity="HIGH",
+                                                description=(
+                                                    "An SQL query is constructed using "
+                                                    "an interpolated value, which may "
+                                                    "allow untrusted input to alter "
+                                                    "the query."
+                                                ),
+                                                recommendation=(
+                                                    "Use parameterized queries or "
+                                                    "prepared statements instead of "
+                                                    "interpolating values into SQL."
+                                                ),
+                                                line=node.start_point[0] + 1,
+                                            )
+                                        )
 
     for child in node.children:
         _walk_tree(child, findings)

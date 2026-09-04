@@ -39,3 +39,31 @@ def test_safe_code_has_no_findings():
     findings = analyze_python_code(code)
 
     assert findings == []
+
+
+def test_detect_sql_injection_concatenation():
+    code = (
+        'user_input = input()\n'
+        'cursor.execute("SELECT * FROM users WHERE id = " + user_input)'
+    )
+
+    findings = analyze_python_code(code)
+
+    assert len(findings) == 1
+    assert findings[0].title == "Possible SQL Injection"
+    assert findings[0].severity == "HIGH"
+    assert findings[0].line == 2
+
+
+def test_detect_sql_injection_f_string():
+    code = (
+        'user_input = input()\n'
+        'cursor.execute(f"SELECT * FROM users WHERE id = {user_input}")'
+    )
+
+    findings = analyze_python_code(code)
+
+    assert len(findings) == 1
+    assert findings[0].title == "Possible SQL Injection"
+    assert findings[0].severity == "HIGH"
+    assert findings[0].line == 2
