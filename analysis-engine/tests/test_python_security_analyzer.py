@@ -67,6 +67,8 @@ def test_detect_sql_injection_f_string():
     assert findings[0].title == "Possible SQL Injection"
     assert findings[0].severity == "HIGH"
     assert findings[0].line == 2
+
+
 def test_detect_hardcoded_secret():
     code = (
         'API_KEY = "sk-example123"\n'
@@ -97,3 +99,33 @@ def test_environment_variable_secret_is_safe():
     findings = analyze_python_code(code)
 
     assert findings == []
+
+
+def test_detect_pickle_loads():
+    code = (
+        "import pickle\n"
+        "data = input()\n"
+        "result = pickle.loads(data)"
+    )
+
+    findings = analyze_python_code(code)
+
+    assert len(findings) == 1
+    assert findings[0].title == "Unsafe Deserialization: pickle.loads()"
+    assert findings[0].severity == "CRITICAL"
+    assert findings[0].line == 3
+
+
+def test_detect_pickle_load():
+    code = (
+        "import pickle\n"
+        "with open('data.pkl', 'rb') as file:\n"
+        "    result = pickle.load(file)"
+    )
+
+    findings = analyze_python_code(code)
+
+    assert len(findings) == 1
+    assert findings[0].title == "Unsafe Deserialization: pickle.load()"
+    assert findings[0].severity == "CRITICAL"
+    assert findings[0].line == 3

@@ -26,6 +26,17 @@ DANGEROUS_MODULE_FUNCTIONS = {
     ),
 }
 
+UNSAFE_DESERIALIZATION_FUNCTIONS = {
+    ("pickle", "loads"): (
+        "pickle.loads() can execute arbitrary code when deserializing "
+        "untrusted or maliciously crafted data."
+    ),
+    ("pickle", "load"): (
+        "pickle.load() can execute arbitrary code when deserializing "
+        "untrusted or maliciously crafted data."
+    ),
+}
+
 SQL_KEYWORDS = (
     "SELECT",
     "INSERT",
@@ -105,6 +116,23 @@ def _walk_tree(
                                     f"Avoid {module_name}.{function_name}() "
                                     "with untrusted input. Prefer safer APIs "
                                     "that avoid shell execution."
+                                ),
+                                line=node.start_point[0] + 1,
+                            )
+                        )
+
+                    # Detect unsafe deserialization using pickle.load() / pickle.loads().
+                    if key in UNSAFE_DESERIALIZATION_FUNCTIONS:
+                        findings.append(
+                            SecurityFinding(
+                                title=f"Unsafe Deserialization: {module_name}.{function_name}()",
+                                severity="CRITICAL",
+                                description=UNSAFE_DESERIALIZATION_FUNCTIONS[key],
+                                recommendation=(
+                                    "Avoid deserializing untrusted data with pickle. "
+                                    "Use a safer serialization format such as JSON "
+                                    "when possible, or ensure the serialized data "
+                                    "is fully trusted."
                                 ),
                                 line=node.start_point[0] + 1,
                             )
