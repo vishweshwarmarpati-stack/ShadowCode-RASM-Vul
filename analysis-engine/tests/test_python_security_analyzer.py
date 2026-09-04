@@ -1,3 +1,4 @@
+
 from app.analyzers.python_security_analyzer import analyze_python_code
 
 
@@ -153,3 +154,31 @@ def test_safe_file_open_has_no_findings():
     findings = analyze_python_code(code)
 
     assert findings == []
+
+
+def test_detect_dangerous_subprocess_import():
+    code = (
+        "import subprocess\n"
+        "subprocess.run(user_input, shell=True)"
+    )
+
+    findings = analyze_python_code(code)
+
+    assert any(
+        finding.title == "Use of dangerous module: subprocess"
+        for finding in findings
+    )
+
+
+def test_detect_dangerous_subprocess_from_import():
+    code = (
+        "from subprocess import run\n"
+        "run(user_input, shell=True)"
+    )
+
+    findings = analyze_python_code(code)
+
+    assert any(
+        finding.title == "Use of dangerous module: subprocess"
+        for finding in findings
+    )

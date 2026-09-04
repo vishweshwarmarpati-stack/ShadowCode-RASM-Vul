@@ -19,6 +19,14 @@ DANGEROUS_FUNCTIONS = {
     "exec": "Use of exec() can lead to arbitrary code execution.",
 }
 
+DANGEROUS_IMPORTS = {
+    "subprocess": (
+        "The subprocess module can execute operating-system commands "
+        "and may introduce command injection risks when used with "
+        "untrusted input."
+    ),
+}
+
 DANGEROUS_MODULE_FUNCTIONS = {
     ("os", "system"): (
         "os.system() executes a command through the operating system shell "
@@ -72,6 +80,53 @@ def _walk_tree(
     node: Node,
     findings: list[SecurityFinding],
 ) -> None:
+    # Detect dangerous imports.
+    if node.type == "import_statement":
+        for child in node.named_children:
+            if child.type == "dotted_name":
+                module_name = child.text.decode("utf-8")
+
+                if module_name in DANGEROUS_IMPORTS:
+                    findings.append(
+                        SecurityFinding(
+                            title=f"Use of dangerous module: {module_name}",
+                            severity="MEDIUM",
+                            description=DANGEROUS_IMPORTS[module_name],
+                            recommendation=(
+                                f"Review all uses of {module_name} and ensure "
+                                "that commands or arguments cannot be controlled "
+                                "by untrusted input."
+                            ),
+                            line=node.start_point[0] + 1,
+                        )
+                    )
+
+    # Detect dangerous imports such as:
+    # from subprocess import run
+
+    if node.type == "import_from_statement":
+        import_text = node.text.decode("utf-8").strip()
+
+        parts = import_text.split()
+
+        if len(parts) >= 2 and parts[0] == "from":
+            module_name = parts[1]
+
+            if module_name in DANGEROUS_IMPORTS:
+                findings.append(
+                    SecurityFinding(
+                        title=f"Use of dangerous module: {module_name}",
+                        severity="MEDIUM",
+                        description=DANGEROUS_IMPORTS[module_name],
+                        recommendation=(
+                            f"Review all uses of {module_name} and ensure "
+                            "that commands or arguments cannot be controlled "
+                            "by untrusted input."
+                        ),
+                        line=node.start_point[0] + 1,
+                    )
+                )
+
     # Detect function calls.
     if node.type == "call":
         function_node = node.child_by_field_name("function")
@@ -153,7 +208,10 @@ def _walk_tree(
                     if key in UNSAFE_DESERIALIZATION_FUNCTIONS:
                         findings.append(
                             SecurityFinding(
-                                title=f"Unsafe Deserialization: {module_name}.{function_name}()",
+                                title=(
+                                    f"Unsafe Deserialization: "
+                                    f"{module_name}.{function_name}()"
+                                ),
                                 severity="CRITICAL",
                                 description=UNSAFE_DESERIALIZATION_FUNCTIONS[key],
                                 recommendation=(
@@ -272,3 +330,5 @@ def _walk_tree(
 
     for child in node.children:
         _walk_tree(child, findings)
+
+    
