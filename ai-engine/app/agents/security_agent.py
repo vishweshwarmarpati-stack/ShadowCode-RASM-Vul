@@ -47,7 +47,8 @@ class SecurityAgent:
         )
 
     def _calculate_risk_score(
-        self, findings: list[SecurityFinding]
+        self,
+        findings: list[SecurityFinding],
     ) -> float:
         severity_scores = {
             "LOW": 10,
@@ -61,5 +62,10 @@ class SecurityAgent:
 
         return min(
             100.0,
-            float(max(severity_scores[finding.severity] for finding in findings)),
+            float(
+                max(
+                    severity_scores[finding.severity]
+                    for finding in findings
+                )
+            ),
         )
