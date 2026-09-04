@@ -129,3 +129,27 @@ def test_detect_pickle_load():
     assert findings[0].title == "Unsafe Deserialization: pickle.load()"
     assert findings[0].severity == "CRITICAL"
     assert findings[0].line == 3
+
+
+def test_detect_path_traversal():
+    code = (
+        "user_input = input()\n"
+        "file = open(user_input)"
+    )
+
+    findings = analyze_python_code(code)
+
+    assert len(findings) == 1
+    assert findings[0].title == "Potential Path Traversal"
+    assert findings[0].severity == "HIGH"
+    assert findings[0].line == 2
+
+
+def test_safe_file_open_has_no_findings():
+    code = (
+        'file = open("config.txt")'
+    )
+
+    findings = analyze_python_code(code)
+
+    assert findings == []

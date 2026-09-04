@@ -95,6 +95,34 @@ def _walk_tree(
                         )
                     )
 
+                # Detect possible path traversal through open(user_supplied_path).
+                if function_name == "open":
+                    arguments_node = node.child_by_field_name("arguments")
+
+                    if arguments_node and arguments_node.named_children:
+                        first_argument = arguments_node.named_children[0]
+
+                        if first_argument.type == "identifier":
+                            findings.append(
+                                SecurityFinding(
+                                    title="Potential Path Traversal",
+                                    severity="HIGH",
+                                    description=(
+                                        "A file path is passed to open() using a "
+                                        "variable. If the variable contains "
+                                        "user-controlled input, an attacker may "
+                                        "use paths such as ../ to access files "
+                                        "outside the intended directory."
+                                    ),
+                                    recommendation=(
+                                        "Validate and normalize file paths before "
+                                        "opening them. Restrict access to an allowed "
+                                        "directory and prevent ../ path traversal."
+                                    ),
+                                    line=node.start_point[0] + 1,
+                                )
+                            )
+
             # Detect dangerous module functions such as os.system().
             elif function_node.type == "attribute":
                 object_node = function_node.child_by_field_name("object")
