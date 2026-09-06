@@ -24,3 +24,4 @@ Thumbs.db
 # Local backups
 Shadow Code BACKUP OLD/
 Shadow Code OLD/
+node_modules/
