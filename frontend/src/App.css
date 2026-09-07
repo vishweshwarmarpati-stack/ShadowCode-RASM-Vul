@@ -3185,3 +3185,530 @@ textarea:focus-visible {
   }
 
 }
+
+/* =========================================================
+   SHADOWCODE V2 — PREMIUM CYBERSECURITY UI
+   Visual upgrade is CSS-first for smooth performance.
+   ========================================================= */
+
+:root {
+  --sc-ink: #142238;
+  --sc-muted: #66778b;
+  --sc-line: rgba(36, 58, 82, .12);
+  --sc-panel: rgba(255,255,255,.78);
+  --sc-panel-strong: rgba(255,255,255,.92);
+  --sc-cyan: #2f9eaa;
+  --sc-violet: #7666c7;
+  --sc-shadow: 0 20px 60px rgba(28,48,70,.09);
+}
+
+body {
+  overflow-x: hidden;
+  background:
+    radial-gradient(circle at 8% 2%, rgba(61, 190, 194, .12), transparent 26%),
+    radial-gradient(circle at 92% 7%, rgba(118, 102, 199, .11), transparent 25%),
+    linear-gradient(135deg, #f8fbfc 0%, #edf3f6 48%, #f7f9fb 100%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: .32;
+  background-image:
+    linear-gradient(rgba(49,86,110,.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(49,86,110,.045) 1px, transparent 1px);
+  background-size: 42px 42px;
+  mask-image: linear-gradient(to bottom, black, transparent 80%);
+}
+
+.navbar {
+  min-height: 74px;
+  padding: 11px clamp(18px, 4vw, 56px);
+  background: rgba(249,252,253,.78);
+  border-bottom: 1px solid rgba(39,59,79,.08);
+  box-shadow: 0 8px 30px rgba(32,52,73,.035);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.brand {
+  min-width: 225px;
+  gap: 11px;
+}
+
+.brand-logo {
+  width: 46px;
+  height: 46px;
+  border-radius: 14px;
+  padding: 0;
+  overflow: hidden;
+  background: #101d2a;
+  border: 1px solid rgba(89, 126, 151, .32);
+  box-shadow: 0 8px 24px rgba(26,53,75,.16), inset 0 0 0 1px rgba(255,255,255,.06);
+  transform: translateZ(0);
+}
+
+.brand-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.version {
+  color: #496264;
+  background: #e8f1ef;
+  border: 1px solid #d6e5e2;
+}
+
+.nav-tabs {
+  background: rgba(235,241,244,.78);
+  border-color: rgba(42,64,85,.09);
+}
+
+.nav-tab {
+  position: relative;
+  transition: background .16s ease, color .16s ease, transform .16s ease;
+}
+
+.nav-tab.active {
+  background: rgba(255,255,255,.95);
+  box-shadow: 0 5px 18px rgba(38,55,73,.09);
+}
+
+.page {
+  padding-top: 54px;
+  padding-bottom: 84px;
+}
+
+.hero {
+  position: relative;
+  min-height: 510px;
+  padding: clamp(28px, 4vw, 48px);
+  border-radius: 30px;
+  border-color: rgba(44,69,91,.1);
+  background:
+    radial-gradient(circle at 80% 18%, rgba(73,185,190,.12), transparent 30%),
+    radial-gradient(circle at 94% 85%, rgba(118,102,199,.10), transparent 25%),
+    rgba(255,255,255,.66);
+  box-shadow: var(--sc-shadow);
+  overflow: hidden;
+}
+
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 280px;
+  height: 280px;
+  right: -110px;
+  bottom: -130px;
+  border: 1px solid rgba(69,150,164,.12);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero h1 {
+  color: #16263b;
+  text-shadow: 0 2px 18px rgba(43,66,89,.06);
+}
+
+.hero-description {
+  color: #64768a;
+}
+
+.eyebrow {
+  background: rgba(235,244,245,.8);
+  border-color: rgba(79,137,145,.15);
+}
+
+.primary-button {
+  background: linear-gradient(135deg, #253a52, #314b64);
+  border-color: #2b425a;
+  box-shadow: 0 10px 26px rgba(39,62,84,.16);
+}
+
+.primary-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.secondary-button {
+  background: rgba(255,255,255,.72);
+  border-color: #cedce2;
+}
+
+.hero-card {
+  position: relative;
+  background: linear-gradient(155deg, rgba(20,38,54,.97), rgba(29,48,65,.94));
+  border: 1px solid rgba(120,171,187,.25);
+  box-shadow: 0 24px 55px rgba(22,42,60,.19);
+  overflow: hidden;
+}
+
+.hero-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(96,224,213,.08), transparent 70%);
+  pointer-events: none;
+}
+
+.hero-card-icon {
+  width: 88px;
+  height: 88px;
+  border-radius: 25px;
+  padding: 0;
+  overflow: hidden;
+  background: #0d1a27;
+  border: 1px solid rgba(110,206,210,.24);
+  box-shadow: 0 12px 30px rgba(0,0,0,.2);
+}
+
+.hero-card-icon img {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.feature-card,
+.editor-card,
+.finding-card,
+.safe-box,
+.assistant-action-card,
+.assistant-chat-panel,
+.assistant-sidebar {
+  border-color: var(--sc-line);
+  box-shadow: 0 15px 42px rgba(37,58,78,.055);
+}
+
+.feature-card {
+  background: rgba(255,255,255,.7);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 45px rgba(37,58,78,.09);
+  border-color: rgba(61,140,153,.2);
+}
+
+.editor-card {
+  background: rgba(247,250,251,.82);
+  overflow: hidden;
+}
+
+.editor-toolbar {
+  background: rgba(234,241,244,.82);
+  border-bottom-color: rgba(45,68,89,.09);
+}
+
+.editor {
+  background: #1b2837;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.025);
+}
+
+.editor textarea {
+  background: #1b2837;
+  color: #edf4f8;
+  caret-color: #70ddd3;
+}
+
+.editor textarea:focus {
+  background: #1d2c3b;
+  outline: none;
+}
+
+.line-numbers {
+  background: #172432;
+  border-right-color: rgba(130,160,180,.12);
+  color: #708296;
+}
+
+.editor-footer {
+  background: rgba(235,241,244,.76);
+  border-top-color: rgba(45,68,89,.08);
+}
+
+.repo-input-container {
+  background: rgba(241,246,248,.76);
+  border-top-color: rgba(45,68,89,.08);
+}
+
+.repo-input-container input {
+  background: rgba(255,255,255,.82);
+  border-color: #cbd9df;
+  transition: border-color .16s ease, box-shadow .16s ease;
+}
+
+.repo-input-container input:focus {
+  border-color: #88aeb7;
+  box-shadow: 0 0 0 3px rgba(79,151,161,.09);
+}
+
+.finding-card {
+  background: rgba(255,255,255,.72);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+
+.finding-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 18px 46px rgba(36,57,77,.075);
+}
+
+.code-result {
+  border-radius: 12px;
+  border-color: rgba(44,66,87,.09);
+}
+
+.safe-box {
+  background: rgba(246,251,248,.78);
+}
+
+.analyzer-badge,
+.engine-status,
+.mini-status,
+.sandbox-status {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.assistant-hero {
+  background:
+    radial-gradient(circle at 82% 20%, rgba(72,197,192,.12), transparent 27%),
+    radial-gradient(circle at 18% 85%, rgba(119,102,199,.09), transparent 24%),
+    rgba(255,255,255,.7);
+  border-color: rgba(41,65,87,.1);
+  box-shadow: var(--sc-shadow);
+}
+
+.assistant-chat-panel {
+  background: rgba(255,255,255,.78);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+}
+
+.assistant-sidebar {
+  background: rgba(242,247,249,.72);
+}
+
+.assistant-message-bubble {
+  font-size: 13.5px;
+  line-height: 1.65;
+}
+
+.assistant-input-box textarea {
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+.assistant-send-button {
+  transition: transform .16s ease, box-shadow .16s ease, opacity .16s ease;
+}
+
+.assistant-send-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.spinner,
+.assistant-send-spinner {
+  will-change: transform;
+}
+
+/* Keep long result pages responsive and reduce rendering cost. */
+.feature-grid,
+.findings-list,
+.results-section,
+.workflow,
+.assistant-workspace {
+  contain: layout style;
+}
+
+@media (max-width: 900px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+  .brand {
+    min-width: 0;
+  }
+  .engine-status {
+    margin-left: auto;
+  }
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 32px;
+  }
+  .hero-card {
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 640px) {
+  .page {
+    width: min(94%, 1180px);
+    padding-top: 30px;
+  }
+  .navbar {
+    gap: 10px;
+  }
+  .nav-tabs {
+    order: 3;
+    width: 100%;
+  }
+  .engine-status {
+    font-size: 10px;
+    padding: 8px 10px;
+  }
+  .hero {
+    border-radius: 22px;
+    padding: 25px 20px;
+  }
+  .hero h1 {
+    font-size: clamp(36px, 12vw, 54px);
+  }
+}
+
+/* Accessibility + smoother motion on low-power / motion-sensitive devices. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+
+/* =========================================================
+   REPO SCANNER — PREMIUM SUBTLE BACKGROUND
+   Scoped only to the repository scanner so the other
+   screens keep their existing visual treatment.
+========================================================= */
+
+.repo-page {
+  position: relative;
+  isolation: isolate;
+}
+
+.repo-page::before {
+  content: "";
+  position: absolute;
+  inset: 25px -8% auto;
+  height: 520px;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(
+      circle at 18% 22%,
+      rgba(79, 157, 170, 0.12),
+      transparent 38%
+    ),
+    radial-gradient(
+      circle at 84% 18%,
+      rgba(103, 116, 166, 0.09),
+      transparent 34%
+    );
+  filter: blur(12px);
+}
+
+.repo-page .analyzer-header {
+  margin-bottom: 30px;
+}
+
+.repo-page .analyzer-badge {
+  background: rgba(237, 243, 246, 0.82);
+  border-color: rgba(120, 143, 157, 0.20);
+  color: #5c7080;
+}
+
+.repo-page .repo-scanner-card {
+  background: #e7eef1;
+  border: 1px solid #d0dde2;
+  box-shadow:
+    0 22px 55px rgba(49, 72, 91, 0.10),
+    0 2px 8px rgba(49, 72, 91, 0.04);
+}
+
+.repo-page .repo-scanner-card .editor-toolbar {
+  background: #dce6eb;
+  border-bottom: 1px solid #cbd9df;
+}
+
+.repo-page .repo-scanner-card .file-name {
+  color: #526879;
+}
+
+.repo-page .repo-scanner-card .window-controls span {
+  background: #91a3af;
+}
+
+.repo-page .repo-input-container {
+  padding: 30px 32px 28px;
+  background:
+    linear-gradient(
+      145deg,
+      rgba(247, 250, 251, 0.82),
+      rgba(231, 239, 242, 0.96)
+    );
+  border-top: 0;
+}
+
+.repo-page .repo-input-container label {
+  color: #334b5e;
+}
+
+.repo-page .repo-input-container input {
+  border: 1px solid #c2d1d8;
+  background: #f8fafb;
+  color: #304759;
+  box-shadow:
+    0 1px 2px rgba(37, 58, 74, 0.04),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.65);
+}
+
+.repo-page .repo-input-container input::placeholder {
+  color: #8b9aa5;
+}
+
+.repo-page .repo-input-container input:hover {
+  border-color: #aebfc8;
+}
+
+.repo-page .repo-input-container input:focus {
+  border-color: #82aeb7;
+  box-shadow:
+    0 0 0 3px rgba(91, 151, 162, 0.10),
+    0 8px 24px rgba(65, 101, 115, 0.07);
+  background: #fbfcfd;
+}
+
+.repo-page .repo-help {
+  color: #778995;
+}
+
+.repo-page .editor-footer {
+  background: #dfe8ec;
+  border-top: 1px solid #ccd9df;
+  color: #71828e;
+}
+
+.repo-page .primary-button {
+  box-shadow:
+    0 10px 24px rgba(48, 76, 96, 0.13);
+}
+
+.repo-page .primary-button:hover {
+  box-shadow:
+    0 14px 30px rgba(48, 76, 96, 0.17);
+}
+
+/* Keep the scan summary/results visually connected to the new surface. */
+.repo-page .results-summary {
+  background: rgba(248, 250, 251, 0.72);
+  border-color: rgba(190, 204, 211, 0.65);
+}
+
+.repo-page .feature-card {
+  box-shadow: 0 14px 36px rgba(52, 75, 91, 0.07);
+}

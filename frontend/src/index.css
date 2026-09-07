@@ -1,11 +1,4 @@
-html,
-body,
-#root {
-  margin: 0;
-  width: 100%;
-  min-height: 100%;
-}
-
-body {
-  margin: 0;
-}
+html, body, #root { margin: 0; width: 100%; min-height: 100%; }
+html { scroll-behavior: smooth; }
+body { margin: 0; }
+button, input, textarea { -webkit-tap-highlight-color: transparent; }
