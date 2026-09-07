@@ -1,8 +1,9 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+import hackerAvatar from "./assets/shadowcode-hacker.svg";
 
 // Local FastAPI backend
-const API = "http://127.0.0.1:8000";
+const API = (import.meta.env.VITE_API_URL || "https://shadowcode-backend.onrender.com").replace(/\/$/, "");
 
 const demoCode = `from flask import request
 import sqlite3
@@ -557,7 +558,9 @@ function App() {
           className="brand"
           onClick={() => setActiveTab("overview")}
         >
-          <div className="brand-logo">◇</div>
+          <div className="brand-logo">
+            <img src={hackerAvatar} alt="ShadowCode cyber hacker" />
+          </div>
 
           <div className="brand-text">
             <div className="brand-title">
@@ -702,7 +705,7 @@ function App() {
             </div>
 
             <div className="hero-card">
-              <div className="hero-card-icon">◇</div>
+              <div className="hero-card-icon"><img src={hackerAvatar} alt="" aria-hidden="true" /></div>
 
               <h3>ShadowCode</h3>
 
@@ -1170,7 +1173,7 @@ function App() {
       ====================================================== */}
 
       {activeTab === "repo" && (
-        <main className="page analyzer-page">
+        <main className="page analyzer-page repo-page">
           <section className="analyzer-header">
             <div>
               <div className="eyebrow">
