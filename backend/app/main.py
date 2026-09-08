@@ -41,7 +41,7 @@ app.add_middleware(
     allow_origins=[
         "http://localhost:5173",
         "http://127.0.0.1:5173",
-        "https://shadowcode-frontend-bzof9mue8-chkeerthitej-4302s-projects.vercel.app",
+        "https://shadow-code-p-1.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
