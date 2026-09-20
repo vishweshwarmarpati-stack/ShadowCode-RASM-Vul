@@ -90,7 +90,11 @@ class MultiViewRetriever:
         # ==========================================
 
         self.model = SentenceTransformer(
-            MODEL_NAME
+            MODEL_NAME,
+            backend="onnx",
+            model_kwargs={
+                "provider": "CPUExecutionProvider"
+            }
         )
 
         # ==========================================

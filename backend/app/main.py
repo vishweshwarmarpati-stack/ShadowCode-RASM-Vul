@@ -39,9 +39,9 @@ app = FastAPI(
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
+        "https://shadowcode-rasm-vul-frontend.vercel.app",
+        "http://localhost:3000",
         "http://localhost:5173",
-        "http://127.0.0.1:5173",
-        "https://shadow-code-p-1.vercel.app",
     ],
     allow_credentials=True,
     allow_methods=["*"],
