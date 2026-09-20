@@ -40,6 +40,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "https://shadowcode-rasm-vul-frontend.vercel.app",
+        "https://shadowcode-rasm-vul-frontend.vercel.app/",
         "http://localhost:3000",
         "http://localhost:5173",
     ],
