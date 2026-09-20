@@ -34,4 +34,4 @@ tree-sitter-c
 tree-sitter-cpp
 
 --extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.14.0
+torch==2.14.0+cpu
