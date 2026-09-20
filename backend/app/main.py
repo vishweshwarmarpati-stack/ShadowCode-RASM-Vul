@@ -452,40 +452,38 @@ async def analyze_repository(
                         )
 
                         # =================================================
-                        # STEP 3: PREPARE VULNERABLE LINE + CORRECTED CODE
+                        # PREPARE CORRECTED CODE
                         # =================================================
 
                         corrected_code = ""
 
                         try:
+
                             corrected_code = (
                                 vulnerability.get(
                                     "corrected_code",
-                            ""
+                                    "",
                                 )
-                        )
+                            )
+
                         except Exception:
+
                             corrected_code = ""
 
                         # ------------------------------------------------
-                        # If AI did not provide corrected code,
-                        # keep it empty for now
-                                # ------------------------------------------------
+                        # If AI did not provide corrected code
+                        # ------------------------------------------------
 
                         if not corrected_code:
+
                             corrected_code = (
                                 "Corrected code will be generated "
                                 "by the AI security assistant."
-                         )
+                            )
 
-                        # ------------------------------------------------
-                        # Continue with verification
-                        # ------------------------------------------------
-
-
-                        # ------------------------------------------------
-                        # Generate verification test
-                        # ------------------------------------------------
+                        # =================================================
+                        # GENERATE VERIFICATION TEST
+                        # =================================================
 
                         verification = None
 
@@ -514,9 +512,7 @@ async def analyze_repository(
                             "NOT_AVAILABLE"
                         )
 
-                        verification_reason = (
-                            ""
-                        )
+                        verification_reason = ""
 
                         verification_test = None
 
@@ -710,19 +706,38 @@ async def analyze_repository(
                                 )
                             ),
 
+                            # ------------------------------------------------
+                            # RAG / MULTI-VIEW EVIDENCE
+                            # ------------------------------------------------
+
+                            "rag_evidence": (
+                                vulnerability.get(
+                                    "rag_evidence",
+                                    [],
+                                )
+                            ),
+
+                            # ------------------------------------------------
                             # Repository information
+                            # ------------------------------------------------
+
                             "file": relative_file,
 
                             "line": line_number,
 
                             "code": code_line,
 
-                            "corrected_code": vulnerability.get(
-                                "corrected_code",
-                                "",
-                            ), 
+                            "corrected_code": (
+                                vulnerability.get(
+                                    "corrected_code",
+                                    "",
+                                )
+                            ),
 
+                            # ------------------------------------------------
                             # Sandbox information
+                            # ------------------------------------------------
+
                             "verification_status": (
                                 verification_status
                             ),
@@ -1152,5 +1167,3 @@ async def verify_finding(
             status_code=500,
             detail=str(error),
         )
-    
-

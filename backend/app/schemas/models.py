@@ -31,6 +31,49 @@ class RepositoryAnalysisRequest(BaseModel):
 
 
 # ============================================================
+# RAG EVIDENCE
+# ============================================================
+
+class RAGEvidence(BaseModel):
+
+    final_score: float = 0.0
+
+    base_score: float = 0.0
+
+    agreement_bonus: float = 0.0
+
+    code_similarity: float = 0.0
+
+    ast_similarity: float = 0.0
+
+    security_similarity: float = 0.0
+
+    code_found: bool = False
+
+    ast_found: bool = False
+
+    security_found: bool = False
+
+    code_rank: Optional[int] = None
+
+    ast_rank: Optional[int] = None
+
+    security_rank: Optional[int] = None
+
+    vulnerable: bool = False
+
+    cwe: List[str] = Field(
+        default_factory=list
+    )
+
+    project: str = ""
+
+    commit_id: str = ""
+
+    message: str = ""
+
+
+# ============================================================
 # VULNERABILITY
 # ============================================================
 
@@ -49,6 +92,14 @@ class Vulnerability(BaseModel):
     remediation: str
 
     confidence: str
+
+    # --------------------------------------------------------
+    # RAG evidence
+    # --------------------------------------------------------
+
+    rag_evidence: List[RAGEvidence] = Field(
+        default_factory=list
+    )
 
     # --------------------------------------------------------
     # Location
