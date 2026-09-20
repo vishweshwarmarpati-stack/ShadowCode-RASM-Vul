@@ -57,7 +57,13 @@ class SecurityAgent:
 
         self.llm = FeatherlessService()
 
-        self.retriever = MultiViewRetriever()
+        self.retriever = None
+
+    def get_retriever(self):
+        if self.retriever is None:
+            print("Loading MultiViewRetriever...")
+            self.retriever = MultiViewRetriever()
+        return self.retriever
 
     # ==========================================================
     # BUILD RAG EVIDENCE
@@ -176,10 +182,7 @@ class SecurityAgent:
         try:
 
             retrieved_results = (
-                self.retriever.search(
-                    code,
-                    top_k=5
-                )
+                self.get_retriever().search(code, top_k=5)
             )
 
         except Exception as error:
