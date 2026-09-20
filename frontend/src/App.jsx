@@ -3,7 +3,7 @@ import "./App.css";
 import hackerAvatar from "./assets/shadowcode-hacker.svg";
 
 // Local FastAPI backend
-const API = (import.meta.env.VITE_API_URL || "https://shadowcode-backend.onrender.com").replace(/\/$/, "");
+const API = (import.meta.env.VITE_API_URL || "https://shadow-code-backend.onrender.com").replace(/\/$/, "");
 
 const demoCode = `from flask import request
 import sqlite3
