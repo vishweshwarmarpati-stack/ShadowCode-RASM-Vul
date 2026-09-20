@@ -433,8 +433,19 @@ For every REAL vulnerability provide:
 Evidence should preferably be an exact line or
 small code fragment from the supplied source.
 
-The corrected_code must contain the secure
-replacement code.
+The corrected_code must contain ONLY the minimal secure replacement
+code needed to fix the specific vulnerability.
+
+Do NOT return the entire source file.
+
+Do NOT return unrelated functions, imports, or surrounding code.
+
+Return only the relevant corrected lines or small code snippet
+that replaces the vulnerable code.
+
+The corrected_code must be specific to this vulnerability and
+must not be identical to the corrected_code of another finding
+unless the vulnerable code is genuinely identical.
 
 Preserve the original functionality where possible.
 
